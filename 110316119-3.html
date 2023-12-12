@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>110316119期末project</title>
+    <style>
+        #title1{width: 1136px;text-align: center;color: blue;font-size: 17px;font-weight: bolder;background-color: aquamarine;}
+        #title2{width: 1136px;text-align: center;color: black;font-size: 17px;font-weight: bolder;background-color: rgb(103, 153, 255);}
+
+        #All{width:1136px;height: 500px;border: 1px solid black;position: absolute;}
+        #line{width: 1136px;height: 0.2px;border: 1px solid black;position: absolute;top:498px}
+        #ball1{width: 20px;height: 20px;border:1.5px solid rgb(123, 0, 199);border-radius: 50%;background-color: rgb(191, 71, 255);position: absolute;top: 454px;left: 50%;}
+        #ball2{width: 20px;height: 20px;border:1.5px solid rgb(81, 182, 255);border-radius: 50%;background-color: rgb(82, 174, 255);position: absolute;top: 454px;left: 45%;}        
+        #box{width: 220px;height: 20px;border: 2px solid rgb(78, 0, 0);background-color: rgb(55, 4, 4);position: absolute;top:478px;left: 486px;}        
+        
+        #brick1{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:486px;top: 0px;}
+        
+        #brick2{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:324px;top: 32px;}
+        #brick3{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:486px;top: 32px;}
+        #brick4{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:648px;top: 32px;}
+        
+        #brick5{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:162px;top: 64px;}
+        #brick6{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:324px;top: 64px;}
+        #brick7{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:486px;top: 64px;}
+        #brick8{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:648px;top: 64px;}
+        #brick9{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:810px;top: 64px;}
+
+        #brick10{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:0px;top: 96px;}
+        #brick11{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:162px;top: 96px;}
+        #brick12{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:324px;top: 96px;}
+        #brick13{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:486px;top: 96px;}
+        #brick14{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:648px;top: 96px;}
+        #brick15{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:810px;top: 96px;}
+        #brick16{ width: 160px;height: 30px;border: 2px solid black;background-color: rgb(0, 0, 101);position: absolute;left:972px;top: 96px;}
+
+
+    </style>
+
+    <script>
+        function illustrate()
+        {
+            alert("這是說明遊戲規則:第三關，兩顆球，利用下面的box滑動打磚塊，不要讓球掉下去，兩顆掉下去就死了！當分數到達1000，會加速！");
+        }
+        
+        window.onload=function()//在页面加载完成后依次执行 Func1、Func2、Func3
+        {
+            document.getElementById('op').value=0;
+            var score=0;
+            var AllEle=document.getElementById("All");
+            var lineEle=document.getElementById("line");
+            var ball1Ele=document.getElementById("ball1");
+            var ball2Ele=document.getElementById("ball2");
+            var horizontalspeed1=3;//水平速度
+            var verticalspeed1=2;//垂直速度
+            var horizontalspeed2=2;//水平速度
+            var verticalspeed2=3;//垂直速度
+            var boxEle=document.getElementById("box");
+            var brick1Ele=document.getElementById("brick1");
+            var brick2Ele=document.getElementById("brick2");
+            var brick3Ele=document.getElementById("brick3");
+            var brick4Ele=document.getElementById("brick4");
+            var brick5Ele=document.getElementById("brick5");
+            var brick6Ele=document.getElementById("brick6");
+            var brick7Ele=document.getElementById("brick7");
+            var brick8Ele=document.getElementById("brick8");
+            var brick9Ele=document.getElementById("brick9");
+            var brick10Ele=document.getElementById("brick10");
+            var brick11Ele=document.getElementById("brick11");
+            var brick12Ele=document.getElementById("brick12");
+            var brick13Ele=document.getElementById("brick13");
+            var brick14Ele=document.getElementById("brick14");
+            var brick15Ele=document.getElementById("brick15");
+            var brick16Ele=document.getElementById("brick16");
+
+            setInterval(function(){ball1Ele.style.left=ball1Ele.offsetLeft+horizontalspeed1+'px';ball1Ele.style.top=ball1Ele.offsetTop+verticalspeed1+"px";//球的移動
+                if(ball1Ele.offsetLeft>=1110||ball1Ele.offsetLeft<=0)
+                {
+                    horizontalspeed1*=-1;
+                }
+                if(ball1Ele.offsetTop>=485||ball1Ele.offsetTop<=0)
+                {
+                    verticalspeed1*=-1;
+                }
+                if(bump(ball1Ele,boxEle))//碰到下面的box，反彈
+                {
+                    verticalspeed1*=-1;
+                }
+                if(bump(ball1Ele,lineEle))//碰到底死掉
+                {
+                    horizontalspeed1=0.01;
+                    verticalspeed1=0;
+                }
+                if(score==1600)
+                {
+                    alert("遊戲結束");
+                    window.close();
+                }
+                if(bump(ball1Ele,brick1Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick1Ele.remove(brick1Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick2Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick2Ele.remove(brick2Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick3Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick3Ele.remove(brick3Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick4Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick4Ele.remove(brick4Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick5Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick5Ele.remove(brick5Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick6Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick6Ele.remove(brick6Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick7Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick7Ele.remove(brick7Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick8Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick8Ele.remove(brick8Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick9Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick9Ele.remove(brick9Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=6;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick10Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick10Ele.remove(brick10Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick11Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick11Ele.remove(brick11Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick12Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick12Ele.remove(brick12Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick13Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick13Ele.remove(brick13Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick14Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick14Ele.remove(brick14Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick15Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick15Ele.remove(brick15Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                if(bump(ball1Ele,brick16Ele))
+                {
+                    verticalspeed1*=-1;
+                    brick16Ele.remove(brick16Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed1=5;//水平速度
+                        verticalspeed1=7;//垂直速度
+                    };
+                }
+                
+            },10);
+
+            setInterval(function(){ball2Ele.style.left=ball2Ele.offsetLeft+horizontalspeed2+'px';ball2Ele.style.top=ball2Ele.offsetTop+verticalspeed2+"px";//球的移動
+                if(ball2Ele.offsetLeft>=1110||ball2Ele.offsetLeft<=0)
+                {
+                    horizontalspeed2*=-1;
+                }
+                if(ball2Ele.offsetTop>=485||ball2Ele.offsetTop<=0)
+                {
+                    verticalspeed2*=-1;
+                }
+                if(bump(ball2Ele,boxEle))//碰到下面的box，反彈
+                {
+                    verticalspeed2*=-1;
+                }
+                if(bump(ball2Ele,lineEle))//碰到底死掉
+                {
+                    horizontalspeed2=0.01;
+                    verticalspeed2=0;
+                }
+                if(score==1600)
+                {
+                    alert("Win,遊戲結束");
+                    window.close();
+                }
+                if(bump(ball2Ele,brick1Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick1Ele.remove(brick1Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick2Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick2Ele.remove(brick2Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick3Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick3Ele.remove(brick3Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick4Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick4Ele.remove(brick4Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick5Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick5Ele.remove(brick5Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick6Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick6Ele.remove(brick6Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick7Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick7Ele.remove(brick7Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick8Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick8Ele.remove(brick8Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick9Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick9Ele.remove(brick9Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick10Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick10Ele.remove(brick10Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick11Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick11Ele.remove(brick11Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick12Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick12Ele.remove(brick12Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick13Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick13Ele.remove(brick13Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick14Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick14Ele.remove(brick14Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick15Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick15Ele.remove(brick15Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(bump(ball2Ele,brick16Ele))
+                {
+                    verticalspeed2*=-1;
+                    brick16Ele.remove(brick16Ele);
+                    score+=100;
+                    document.getElementById("op").value = score;
+                    if(score>=1000)
+                    {
+                        horizontalspeed2=5;//水平速度
+                        verticalspeed2=7;//垂直速度
+                    };
+                }
+                if(horizontalspeed1==0.01&&verticalspeed1==0&&horizontalspeed2==0.01&&verticalspeed2==0)
+                {
+                    alert("你死了，遊戲結束");
+                    window.close();
+                }
+            },10);
+
+            boxEle.onmousedown=function(a)//底下方塊按下移動
+            {
+                var offsetX=a.offsetX;
+                document.onmousemove=function(a)
+                {
+                    a=a||window.event;
+                    var clientX=a.clientX;
+                    box.style.left=(clientX-offsetX)+'px'
+                    /*if(boxEle.offsetLeft>=1200)
+                    {
+                        boxEle.offsetLeft=1200;
+                    }
+                    if(boxEle.offsetLeft<=0)
+                    {
+                        boxEle.offsetLeft=0;
+                    }*/
+                }
+            };
+            boxEle.onmouseup=function()//底下方塊放開不動
+            {
+                document.onmousemove=null;
+            }
+
+            function bump(spot1,spot2)
+            {
+                var top1=spot1.offsetTop;
+                var bottom1=spot1.offsetTop+spot1.offsetHeight;
+                var left1=spot1.offsetLeft;
+                var right1=spot1.offsetLeft+spot1.offsetWidth;
+                
+                var top2=spot2.offsetTop;
+                var bottom2=spot2.offsetTop+spot2.offsetHeight;
+                var left2=spot2.offsetLeft;
+                var right2=spot2.offsetLeft+spot2.offsetWidth;
+                
+                if(top2>bottom1||bottom2<top1||left2>right1||right2<left1){
+                    return false;//碰不到
+                }
+                else{
+                    return true;//碰到
+                }
+
+            }
+        }
+
+        
+        
+    </script>
+
+
+</head>
+<body>
+    <div id="title1">
+        <button onclick="illustrate();">說明</button>
+        打磚塊
+    </div>
+    <div id="title2">
+        分數:<input type="text" id="op"/>
+        關卡:3
+    </div>
+    <div id="All">
+        <div id="line"></div>
+        <div id="ball1"></div>
+        <div id="ball2"></div>
+        <div id="box"></div>
+        <div id="brick">
+            <div id="brick1"></div>
+            <div id="brick2"></div>
+            <div id="brick3"></div>
+            <div id="brick4"></div>
+            <div id="brick5"></div>
+            <div id="brick6"></div>
+            <div id="brick7"></div>
+            <div id="brick8"></div>
+            <div id="brick9"></div>
+            <div id="brick10"></div>
+            <div id="brick11"></div>
+            <div id="brick12"></div>
+            <div id="brick13"></div>
+            <div id="brick14"></div>
+            <div id="brick15"></div>
+            <div id="brick16"></div>
+                
+        </div>
+    </div>
+
+</body>
+</html>
